@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Periodic Table Search</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="style/stylesheet.css">
+</head>
+<body>
+    <div id="container">
+        <form>
+            <label for="searchOption">Select search option:</label><br>
+            <select name="searchOption" id="searchOption">
+                <option value="name">Search By Name</option>
+                <option value="symbol">Search By Symbol</option>
+                <option value="atomicNumber">Search By Atomic Number</option>
+            </select>
+            <div id="searchFields">
+                <label for="searchInput">Enter search value:</label><br>
+                <input type="text" name="searchInput" id="searchInput" placeholder="Search Value">
+            </div>
+            <br>
+            <button type="button" onclick="performSearch()">Submit</button>
+        </form>
+    </div>
+    <hr>
+    <div id="result"></div> <!-- This is where the JSON output will be displayed -->
+    <script>
+        function performSearch() {
+            const searchOption = document.getElementById('searchOption').value;
+            const searchInput = document.getElementById('searchInput').value;
+
+            let fetchUrl = '';
+            if (searchOption === 'name') {
+                fetchUrl = `http://127.0.0.1:5000/data/${searchInput}`;
+            } else if (searchOption === 'symbol') {
+                fetchUrl = `http://127.0.0.1:5000/data2/${searchInput}`;
+            } else if (searchOption === 'atomicNumber') {
+                fetchUrl = `http://127.0.0.1:5000/data1/${searchInput}`;
+            }
+
+            if (fetchUrl) {
+                fetch(fetchUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        const resultDiv = document.getElementById('result');
+                        resultDiv.innerText = JSON.stringify(data, null, 2); // Display formatted JSON
+                    })
+                    .catch(error => {
+                        const resultDiv = document.getElementById('result');
+                        resultDiv.innerText = 'Error fetching data';
+                        console.error('Error fetching data:', error);
+                    });
+            }
+        }
+    </script>
+</body>
+</html>

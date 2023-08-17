@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Periodic Table Search</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="style/stylesheet.css">
+</head>
+<body>
+    <div id="container">
+        <form onsubmit="GEle()">
+            <label for="num">Enter from following options:</label><br>
+            <select name="num" id="num">
+                <option value="1">To Search By Name.</option>
+                <option value="2">To Search By Symbol</option>
+                <option value="3">To Search By Atomic Number</option>
+            </select>
+            <label for="name">Enter The Name Of The Element:</label><br>
+            <input type="text" name="" id="EleName" placeholder="Element Name">
+            <label for="sym">Enter The Symbol Of The Element:</label><br>
+            <input type="text" name="" id="Elesym" placeholder="Element Symbol">
+            <label for="Atm">Enter The Atomic Number Of The Element:</label><br>
+            <input type="number" name="" id="Eleno" placeholder="Atomic number">
+        </form>
+        <br>
+        <button onclick="GEle()">Submit</button>
+        <br>
+        
+    </div>
+    <hr>
+    <div id="result"></div> <!-- This is where the JSON output will be displayed -->
+    <script>
+        function GEle() {
+            const ELename = document.getElementById('EleName').value;
+            const ELesym = document.getElementById('Elesym').value;
+            const ELeno= document.getElementById('Eleno').value;
+            
+
+            //Fetch by Name
+            fetch(`http://127.0.0.1:5000/data/${ELename}`)
+                .then(data => data.json())
+                .then(m => {
+                    const resultDiv = document.getElementById('result');
+                    resultDiv.innerText = JSON.stringify(m, null, 2); // Display formatted JSON
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+
+                //Fetch my symbol
+                fetch(`http://127.0.0.1:5000/data2/${ELesym}`)
+                .then(data => data.json())
+                .then(m => {
+                    const resultDiv = document.getElementById('result');
+                    resultDiv.innerText = JSON.stringify(m, null, 2); // Display formatted JSON
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+
+                //Fetch by atm number
+                fetch(`http://127.0.0.1:5000/data1/${ELeno}`)
+                .then(data => data.json())
+                .then(m => {
+                    const resultDiv = document.getElementById('result');
+                    resultDiv.innerText = JSON.stringify(m, null, 2); // Display formatted JSON
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+        }
+    </script>
+</body>
+</html>
